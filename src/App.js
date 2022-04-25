@@ -1,22 +1,33 @@
 import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
 
 function App() {
+  const [producto, setProducto] = useState();
+
+  const getPro = async() => {
+  const api = await fetch("http://api.com/producto");
+  const result = await api.json();
+  console.log(result.producto);
+  setProducto(result.producto);
+  }
+
+  useEffect(async() => {
+    await getPro();
+  },[])
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {producto.map((producto,index)=>{
+          return(
+            <div key={producto.idpro}>
+              <h6>{producto.nombre}</h6>
+            </div>
+          )
+          
+        })}
+        <button onClick={getPro}>dsds</button>
       </header>
     </div>
   );
